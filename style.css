@@ -1,0 +1,438 @@
+/* SimpleTune - Minimalistic Guitar Tuner */
+
+:root {
+    --bg-primary: #0a0a0b;
+    --bg-secondary: #141416;
+    --bg-tertiary: #1c1c1f;
+    --text-primary: #e8e6e3;
+    --text-secondary: #7a7875;
+    --text-muted: #4a4845;
+    --accent: #d4a853;
+    --accent-glow: rgba(212, 168, 83, 0.3);
+    --success: #5cb85c;
+    --success-glow: rgba(92, 184, 92, 0.4);
+    --flat: #c9654a;
+    --sharp: #5a8fc9;
+    --border: #2a2a2d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Space Grotesk', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: 
+        radial-gradient(ellipse at 50% 0%, rgba(212, 168, 83, 0.03) 0%, transparent 50%),
+        linear-gradient(180deg, var(--bg-primary) 0%, #08080a 100%);
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+header h1 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Tuner Display */
+.tuner {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Note Display */
+.note-display {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+
+.note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 5rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--text-primary);
+    transition: color 0.2s ease;
+}
+
+.note.in-tune {
+    color: var(--success);
+    text-shadow: 0 0 30px var(--success-glow);
+}
+
+.octave {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+}
+
+/* Frequency Display */
+.frequency {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    color: var(--text-secondary);
+}
+
+.hz-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.hz-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+/* Tuning Meter */
+.meter {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.meter-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0.5rem;
+    font-size: 1.25rem;
+}
+
+.meter-labels span:first-child {
+    color: var(--flat);
+}
+
+.meter-labels span:last-child {
+    color: var(--sharp);
+}
+
+.meter-bar {
+    position: relative;
+    height: 32px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 2px;
+}
+
+.meter-segments {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1px;
+    position: relative;
+}
+
+.meter-segment {
+    flex: 1;
+    height: 6px;
+    background: var(--bg-secondary);
+    border-radius: 1px 1px 0 0;
+    transition: height 0.1s ease-out, opacity 0.15s ease;
+    position: relative;
+    opacity: 0.4;
+}
+
+/* Center segment (in-tune) - green only when active */
+.meter-segment.center {
+    background: var(--bg-secondary);
+    height: 6px;
+    opacity: 0.4;
+}
+
+.meter-segment.center.active {
+    background: var(--success);
+    height: 32px;
+    opacity: 1;
+    box-shadow: 0 0 12px var(--success-glow);
+}
+
+/* Flat side (left) - red, getting darker */
+.meter-segment.flat-1 {
+    background: rgba(201, 101, 74, 1);
+}
+
+.meter-segment.flat-2 {
+    background: rgba(201, 101, 74, 0.85);
+}
+
+.meter-segment.flat-3 {
+    background: rgba(201, 101, 74, 0.7);
+}
+
+.meter-segment.flat-4 {
+    background: rgba(201, 101, 74, 0.55);
+}
+
+.meter-segment.flat-5 {
+    background: rgba(201, 101, 74, 0.4);
+}
+
+.meter-segment.flat-extreme {
+    background: rgba(201, 101, 74, 0.25);
+}
+
+/* Sharp side (right) - red, getting darker */
+.meter-segment.sharp-1 {
+    background: rgba(201, 101, 74, 1);
+}
+
+.meter-segment.sharp-2 {
+    background: rgba(201, 101, 74, 0.85);
+}
+
+.meter-segment.sharp-3 {
+    background: rgba(201, 101, 74, 0.7);
+}
+
+.meter-segment.sharp-4 {
+    background: rgba(201, 101, 74, 0.55);
+}
+
+.meter-segment.sharp-5 {
+    background: rgba(201, 101, 74, 0.4);
+}
+
+.meter-segment.sharp-extreme {
+    background: rgba(201, 101, 74, 0.25);
+}
+
+/* Active segments light up */
+.meter-segment.active {
+    height: 24px;
+    opacity: 1;
+}
+
+.meter-segment.flat-extreme.active::before,
+.meter-segment.sharp-extreme.active::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 7px solid #f4d03f;
+    filter: drop-shadow(0 0 6px rgba(244, 208, 63, 0.9));
+    z-index: 1;
+}
+
+/* Subtle arc at bottom */
+.meter-arc {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(201, 101, 74, 0.3) 20%,
+        rgba(201, 101, 74, 0.4) 50%,
+        rgba(201, 101, 74, 0.3) 80%,
+        transparent 100%
+    );
+    border-radius: 0 0 4px 4px;
+}
+
+.cents {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+.cents-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.cents-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+/* String Indicators */
+.strings {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: center;
+}
+
+.string {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.6rem 0.9rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.string:hover {
+    border-color: var(--text-muted);
+}
+
+.string.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg-primary);
+    box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.string.in-tune {
+    background: var(--success);
+    border-color: var(--success);
+    color: var(--bg-primary);
+    box-shadow: 0 0 16px var(--success-glow);
+}
+
+.string.locked {
+    background: var(--bg-secondary);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow), 0 0 0 1px var(--accent);
+    position: relative;
+}
+
+.string.locked::after {
+    content: 'lock';
+    font-family: 'Material Symbols Rounded';
+    font-size: 0.75rem;
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--accent);
+    color: var(--bg-primary);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    font-variation-settings: 'FILL' 1;
+}
+
+/* Start Button */
+.start-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    background: var(--accent);
+    border: none;
+    border-radius: 12px;
+    color: var(--bg-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px var(--accent-glow);
+}
+
+.start-btn:active {
+    transform: translateY(0);
+}
+
+.start-btn.listening {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    box-shadow: none;
+}
+
+.start-btn.listening:hover {
+    background: var(--bg-secondary);
+}
+
+.start-btn .material-symbols-rounded {
+    font-size: 1.25rem;
+}
+
+/* Status */
+.status {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-align: center;
+    min-height: 1.5em;
+}
+
+.status.error {
+    color: var(--flat);
+}
+
+/* Responsive */
+@media (max-width: 440px) {
+    .container {
+        padding: 1.5rem;
+    }
+    
+    .note {
+        font-size: 4rem;
+    }
+    
+    .string {
+        padding: 0.5rem 0.7rem;
+        font-size: 0.8rem;
+    }
+}

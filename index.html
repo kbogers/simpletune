@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleTune</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SimpleTune</h1>
+        </header>
+
+        <main>
+            <div class="tuner">
+                <!-- Current detected note -->
+                <div class="note-display">
+                    <span class="note">—</span>
+                    <span class="octave"></span>
+                </div>
+
+                <!-- Frequency display -->
+                <div class="frequency">
+                    <span class="hz-value">—</span>
+                    <span class="hz-label">Hz</span>
+                </div>
+
+                <!-- Tuning meter -->
+                <div class="meter">
+                    <div class="meter-labels">
+                        <span>♭</span>
+                        <span>♯</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-segments" id="meterSegments"></div>
+                        <div class="meter-arc"></div>
+                    </div>
+                    <div class="cents">
+                        <span class="cents-value">0</span>
+                        <span class="cents-label">cents</span>
+                    </div>
+                </div>
+
+                <!-- String indicators -->
+                <div class="strings">
+                    <button class="string" data-note="E2">E2</button>
+                    <button class="string" data-note="A2">A</button>
+                    <button class="string" data-note="D3">D</button>
+                    <button class="string" data-note="G3">G</button>
+                    <button class="string" data-note="B3">B</button>
+                    <button class="string" data-note="E4">E4</button>
+                </div>
+            </div>
+
+            <!-- Start button -->
+            <button class="start-btn" id="startBtn">
+                <span class="material-symbols-rounded">mic</span>
+                <span>Start Tuning</span>
+            </button>
+
+            <!-- Status message -->
+            <p class="status" id="status"></p>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
