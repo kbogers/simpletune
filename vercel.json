@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/simpletune",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/simpletune/(.*)",
+      "destination": "/$1"
+    }
+  ]
+}

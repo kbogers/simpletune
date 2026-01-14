@@ -43,11 +43,14 @@ const hzValueEl = document.querySelector('.hz-value');
 const centsValueEl = document.querySelector('.cents-value');
 const meterSegmentsEl = document.getElementById('meterSegments');
 const stringButtons = document.querySelectorAll('.string');
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = themeToggle.querySelector('.material-symbols-rounded');
 
 // Initialize
 startBtn.addEventListener('click', toggleListening);
 initializeMeter();
 initializeStringButtons();
+initializeTheme();
 
 async function toggleListening() {
     if (isListening) {
@@ -197,6 +200,33 @@ function initializeStringButtons() {
     stringButtons.forEach((btn, index) => {
         btn.addEventListener('click', () => toggleStringLock(index));
     });
+}
+
+function initializeTheme() {
+    // Load theme from localStorage or default to dark
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+    
+    // Add click handler for theme toggle
+    themeToggle.addEventListener('click', toggleTheme);
+}
+
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    
+    // Update icon
+    if (theme === 'light') {
+        themeIcon.textContent = 'dark_mode';
+    } else {
+        themeIcon.textContent = 'light_mode';
+    }
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
 }
 
 function toggleStringLock(index) {
